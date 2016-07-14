@@ -69,7 +69,13 @@ namespace InventoryWebApp.Controllers
                 db.Sales.Add(sale);
                 db.SaveChanges();
 
-                sale.TotalSalePrice = (sale.QuantityPurchase * sale.SalePrice);
+                decimal totalPrice = (sale.QuantityPurchase * sale.SalePrice);
+                sale.TotalSalePrice = totalPrice;
+                product.NumberOfSales += sale.QuantityPurchase;
+                product.Quantity -= sale.QuantityPurchase;
+                product.TotalInvestmentPerUnit -= totalPrice;
+
+                db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
