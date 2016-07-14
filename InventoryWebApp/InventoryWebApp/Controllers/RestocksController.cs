@@ -41,8 +41,9 @@ namespace InventoryWebApp.Controllers
         }
 
         // GET: Restocks/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
+            TempData["ProductId"] = id;
             return View();
         }
 
@@ -59,7 +60,7 @@ namespace InventoryWebApp.Controllers
                 restock.TotalInvestment = 0;
                 restock.RestockDate = DateTime.Now;
                 restock.UserId = currentUserId;
-                restock.ProductId = 0;
+                restock.ProductId = (int)TempData["ProductId"];
 
                 db.Restocks.Add(restock);
                 db.SaveChanges();

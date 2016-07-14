@@ -40,8 +40,9 @@ namespace InventoryWebApp.Controllers
         }
 
         // GET: Sales/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
+            TempData["ProductId"] = id;
             return View();
         }
 
@@ -61,7 +62,7 @@ namespace InventoryWebApp.Controllers
                 sale.TotalSalePrice = 0;
                 sale.UserId = currentUserId;
                 sale.SalePrice = 0;
-                sale.ProductId = 0;
+                sale.ProductId = (int)TempData["ProductId"];
 
                 db.Sales.Add(sale);
                 db.SaveChanges();
