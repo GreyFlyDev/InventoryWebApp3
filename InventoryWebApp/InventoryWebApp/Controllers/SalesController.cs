@@ -57,15 +57,19 @@ namespace InventoryWebApp.Controllers
             if (ModelState.IsValid)
             {
                 string currentUserId = User.Identity.GetUserId().ToString();
+                int productId = (int)TempData["ProductId"];
 
+                Product product = db.Products.Where(p => p.ProductId == productId).FirstOrDefault();
                 sale.SaleDate = DateTime.Now;
                 sale.TotalSalePrice = 0;
                 sale.UserId = currentUserId;
-                sale.SalePrice = 0;
+                sale.SalePrice = product.SalePrice;
                 sale.ProductId = (int)TempData["ProductId"];
 
                 db.Sales.Add(sale);
                 db.SaveChanges();
+
+                sale.TotalSalePrice = (sale.QuantityPurchase * sale.SalePrice);
                 return RedirectToAction("Index");
             }
 

@@ -65,6 +65,13 @@ namespace InventoryWebApp.Controllers
                 db.Restocks.Add(restock);
                 db.SaveChanges();
 
+                Product product = db.Products.Where(p => p.ProductId == restock.ProductId).FirstOrDefault();
+                restock.TotalInvestment = (restock.Quantity * product.PurchasePricePerUnit);
+                product.Quantity += restock.Quantity;
+                product.TotalInvestmentPerUnit += restock.TotalInvestment;
+
+                db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 
