@@ -53,6 +53,15 @@ namespace InventoryWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                string currentUserId = User.Identity.GetUserId().ToString();
+
+                product.Quantity = 0;
+                product.PurchasePricePerUnit = 0;
+                product.TotalInvestmentPerUnit = 0;
+                product.NumberOfSales = 0;
+                product.UserId = currentUserId;
+                product.DateAdded = DateTime.Now;
+
                 db.Products.Add(product);
                 db.SaveChanges();
                 return RedirectToAction("Index");

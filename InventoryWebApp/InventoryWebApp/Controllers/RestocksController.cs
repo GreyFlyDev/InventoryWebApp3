@@ -54,8 +54,15 @@ namespace InventoryWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                string currentUserId = User.Identity.GetUserId().ToString();
+                restock.TotalInvestment = 0;
+                restock.RestockDate = DateTime.Now;
+                restock.UserId = currentUserId;
+                restock.ProductId = 0;
+
                 db.Restocks.Add(restock);
                 db.SaveChanges();
+
                 return RedirectToAction("Index");
             }
 

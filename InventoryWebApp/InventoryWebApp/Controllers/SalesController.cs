@@ -51,8 +51,17 @@ namespace InventoryWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "SaleId,QuantityPurchase,SalePrice,TotalSalePrice,SaleDate,ProductId,UserId")] Sale sale)
         {
+
             if (ModelState.IsValid)
             {
+                string currentUserId = User.Identity.GetUserId().ToString();
+
+                sale.SaleDate = DateTime.Now;
+                sale.TotalSalePrice = 0;
+                sale.UserId = currentUserId;
+                sale.SalePrice = 0;
+                sale.ProductId = 0;
+
                 db.Sales.Add(sale);
                 db.SaveChanges();
                 return RedirectToAction("Index");
