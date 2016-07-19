@@ -22,6 +22,11 @@ namespace InventoryWebApp.Controllers
             string CurrentUserId = User.Identity.GetUserId().ToString();
 
             var restocks = db.Restocks.Where(r => r.UserId.Contains(CurrentUserId));
+
+            foreach(var r in restocks)
+            {
+                r.PurchasePricePerUnit = r.TotalInvestment / r.Quantity;
+            }
             return View(restocks);
         }
 
@@ -64,9 +69,10 @@ namespace InventoryWebApp.Controllers
 
 
                 Product product = db.Products.Where(p => p.ProductId == restock.ProductId).FirstOrDefault();
-                product.PurchasePricePerUnit = restock.PurchasePricePerUnit / restock.Quantity;
+                
+                decimal totalInvestment = 0;
+                totalInvestment = restock.PurchasePricePerUnit;
 
-                decimal totalInvestment = restock.Quantity * product.PurchasePricePerUnit;
                 restock.TotalInvestment = totalInvestment;
                 product.Quantity += restock.Quantity;
                 product.TotalInvestmentPerUnit += totalInvestment;
@@ -74,7 +80,7 @@ namespace InventoryWebApp.Controllers
                 db.Restocks.Add(restock);
                 db.SaveChanges();
                 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Products");
             }
 
             return View(restock);

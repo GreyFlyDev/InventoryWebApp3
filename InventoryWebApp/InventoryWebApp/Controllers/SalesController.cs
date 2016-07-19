@@ -76,7 +76,7 @@ namespace InventoryWebApp.Controllers
                 product.TotalInvestmentPerUnit -= totalPrice;
 
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Products");
             }
 
             return View(sale);
