@@ -21,13 +21,15 @@ namespace InventoryWebApp.Controllers
         {
             string currentUserId = User.Identity.GetUserId().ToString();
             var products = db.Products.Where(p => p.UserId.Contains(currentUserId));
-            foreach(var p in products)
+
+            foreach (Product p in products)
             {
-                if(p.Quantity > 0)
+                if (p.Quantity > 0)
                 {
                     p.PurchasePricePerUnit = (p.TotalInvestmentPerUnit / p.Quantity);
                 }
             }
+            
             db.SaveChanges();
             return View(products);
         }
